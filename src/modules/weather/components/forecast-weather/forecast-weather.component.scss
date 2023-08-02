@@ -1,0 +1,61 @@
+.forecast-weather-component {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+  text-align: center;
+
+  .card {
+    margin-top: 10px;
+    margin-right: 20px;
+    padding: 20px;
+
+    @media only screen and (max-width: 400px) {
+      padding: 10px;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      padding: 0 16px 24px;
+
+      .weather-info {
+        display: flex;
+        align-items: center;
+
+        .weather-temperature {
+          font-size: 22px;
+          font-weight: bold;
+
+          .celsius-symbol {
+            font-size: 20px;
+          }
+        }
+
+        .weather-icon {
+          width: 100px;
+        }
+      }
+
+      .weather-description {
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: capitalize;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+
+      .weather-attribute-wrapper {
+        margin-bottom: 10px;
+
+        .weather-attribute-name {
+          font-weight: bold;
+        }
+
+        .weather-attribute-value {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}

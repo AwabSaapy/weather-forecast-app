@@ -1,0 +1,76 @@
+.current-weather-component {
+  width: 800px;
+  margin-top: 30px;
+  text-align: center;
+
+  @media only screen and (max-width: 500px) {
+    width: 400px;
+  }
+
+  @media only screen and (max-width: 400px) {
+    width: 350px;
+  }
+
+  .card-content {
+    padding: 10px;
+
+    .weather-info {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 40px;
+
+      .weather-city-wrapper {
+        .weather-city {
+          font-size: 45px;
+          font-weight: bold;
+        }
+
+        .weather-country {
+          font-size: 22px;
+        }
+      }
+
+      .weather-image-wrapper {
+        .weather-image {
+          width: 100px;
+        }
+        .weather-description {
+          font-size: 25px;
+          text-transform: capitalize;
+        }
+      }
+    }
+
+    .weather-attributes-wrapper {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+
+      .weather-temperature {
+        font-weight: 600;
+        font-size: 70px;
+      }
+
+      .weather-other-attributes {
+        display: flex;
+        flex-direction: column;
+        width: 180px;
+
+        .weather-attribute-wrapper {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+
+          .weather-attribute-name {
+            font-weight: bold;
+          }
+
+          .weather-attribute-value {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
