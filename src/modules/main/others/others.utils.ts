@@ -24,3 +24,5 @@ export const mapToSelectOptions = <ItemType>(items: ItemType[], keyBy: keyof Ite
     });
     return options;
 };
+
+export const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';

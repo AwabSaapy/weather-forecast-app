@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { IWeather } from "../../types/weather.types";
 import { ICity } from "../../../city/types/city.types";
+import {isDevelopment} from "../../../main/others/others.utils";
 import './current-weather.component.scss';
 
 type CurrentWeatherProps = {
@@ -29,7 +30,7 @@ const CurrentWeather: FC<CurrentWeatherProps> = (props) => {
                         </div>
 
                         <div className="weather-image-wrapper">
-                            <img className="weather-image" alt={weather.description} src={`assets/${weather.icon}.png`} />
+                            <img className="weather-image" alt={weather.description} src={`${isDevelopment ? 'weather-forecast-app/' : ''}assets/${weather.icon}.png`} />
                             <div className="weather-description"> {weather.description} </div>
                         </div>
                     </div>

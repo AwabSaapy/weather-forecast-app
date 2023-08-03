@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { WEEK_DAYS } from "../../constants/weather.constants";
 import { IForecastWeather } from "../../types/weather.types";
 import './forecast-weather.component.scss';
+import {isDevelopment} from "../../../main/others/others.utils";
 
 type ForecastWeatherProps = {
     forecastWeather: IForecastWeather;
@@ -32,7 +33,7 @@ const ForecastWeather: FC<ForecastWeatherProps> = (props) => {
                                         <span className="celsius-symbol"> °C </span>
                                     </div>
 
-                                    <img className="weather-icon" alt={weather.description} src={`assets/${weather.icon}.png`} />
+                                    <img className="weather-image" alt={weather.description} src={`${isDevelopment ? 'weather-forecast-app/' : ''}assets/${weather.icon}.png`} />
                                 </div>
 
                                 <div className="weather-description"> {weather.description} </div>
