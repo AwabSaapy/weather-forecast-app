@@ -1,4 +1,5 @@
 import React, {FC, useEffect, useState} from "react";
+import {Alert, Snackbar} from "@mui/material";
 import {ICity} from "../../../city/types/city.types";
 import CitySelect, {ICitySelectEvent} from "../../../city/components/city-select/city-select.componet";
 import {WEATHER_API_KEY, WEATHER_API_URL} from "../../apis/weather.api";
@@ -7,6 +8,12 @@ import CurrentWeather from "../../components/current-weather/current-weather.com
 import ForecastWeather from "../../components/forecast-weather/forecast-weather.component";
 import Spinner from "../../../main/components/spinner/spinner.component";
 import './weather.container.scss';
+
+class CustomError extends Error {
+    constructor(public code: number, message: string) {
+        super(message);
+    }
+}
 
 type WeatherContainerProps = {
 
@@ -18,12 +25,22 @@ const WeatherContainer: FC<WeatherContainerProps> = () => {
     const [currentWeather, currentWeatherSet] = useState<IWeather>();
     const [forecastWeather, forecastWeatherSet] = useState<IForecastWeather>();
     const [loading, loadingSet] = useState<boolean>(false);
+    const [errorSnackbar, errorSnackbarSet] = useState<string>("");
 
     const onCitySelectChange = (event: ICitySelectEvent) => {
         if (event.type === "SELECTED") {
             citySet(event.payload.city);
             currentWeatherSet(undefined);
             forecastWeatherSet(undefined);
+        }
+    }
+
+    const checkErrorExist = (code: string, message: string) => {
+        if (!code || !message) return;
+
+        const codeError = parseInt(code);
+        if (codeError >= 400 && codeError <= 499) {
+            throw new CustomError(codeError, message);
         }
     }
 
@@ -36,10 +53,15 @@ const WeatherContainer: FC<WeatherContainerProps> = () => {
 
                 const response = await fetch(`${WEATHER_API_URL}/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}&units=metric`);
                 const result = await response.json();
+                loadingSet(false);
+
+                checkErrorExist(result.cod, result.message);
 
                 currentWeatherSet(result);
-                loadingSet(false);
             } catch (error) {
+                if (error instanceof CustomError) {
+                    errorSnackbarSet(error.message);
+                }
                 console.error(error);
                 loadingSet(false);
             }
@@ -55,9 +77,15 @@ const WeatherContainer: FC<WeatherContainerProps> = () => {
                 const response = await fetch(`${WEATHER_API_URL}/forecast?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}&units=metric`);
                 const result = await response.json();
 
-                forecastWeatherSet(result);
                 loadingSet(false);
+
+                checkErrorExist(result.cod, result.message);
+
+                forecastWeatherSet(result);
             } catch (error) {
+                if (error instanceof CustomError) {
+                    errorSnackbarSet(error.message);
+                }
                 console.error(error);
                 loadingSet(false);
             }
@@ -86,6 +114,12 @@ const WeatherContainer: FC<WeatherContainerProps> = () => {
             {
                 (!loading && forecastWeather) && <ForecastWeather forecastWeather={forecastWeather} />
             }
+
+            <Snackbar open={!!errorSnackbar} autoHideDuration={3000} anchorOrigin={{ vertical: 'top', horizontal: 'center'}} onClose={() => errorSnackbarSet("")}>
+                <Alert onClose={() => errorSnackbarSet("")} severity="error" sx={{ width: '100%' }}>
+                    {errorSnackbar}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }
